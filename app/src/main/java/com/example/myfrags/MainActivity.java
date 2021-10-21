@@ -92,6 +92,14 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     @Override
     public void onButtonClickClockwise() {
         Toast.makeText(getApplicationContext(), "Clockwise", Toast.LENGTH_SHORT).show();
+
+        int t = frames[0];
+        frames[0] = frames[1];
+        frames[1] = frames[2];
+        frames[2] = frames[3];
+        frames[3] = t;
+
+        newFragments();
     }
 
     @Override
