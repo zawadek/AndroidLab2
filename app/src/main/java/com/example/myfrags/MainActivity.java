@@ -42,10 +42,20 @@ public class MainActivity extends FragmentActivity {
         transaction.commit();*/
 
         //wersja lab 3
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             frames = new int[]{R.id.frame1, R.id.frame2, R.id.frame3, R.id.frame4};
             hiden = false;
-        }else{
+
+            Fragment[] fragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            for (int i = 0; i < 4; i++) {
+                transaction.add(frames[i], fragments[i]);
+            }
+
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }else {
             frames = savedInstanceState.getIntArray("FRAMES");
             hiden = savedInstanceState.getBoolean("HIDEN");
         }
