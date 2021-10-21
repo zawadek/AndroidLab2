@@ -25,6 +25,7 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     //Wersja z lab 3 poniżej
     private int frames[];
     private boolean hiden;
+    private int[] sequence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
             frames = new int[]{R.id.frame1, R.id.frame2, R.id.frame3, R.id.frame4};
             hiden = false;
 
+            //eliminowanie buga
+            sequence = new int[]{0,1,2,3};
+
             Fragment[] fragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -64,6 +68,8 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
         } else {
             frames = savedInstanceState.getIntArray("FRAMES");
             hiden = savedInstanceState.getBoolean("HIDEN");
+
+            sequence = savedInstanceState.getIntArray("SEQUENCE");
         }
     }
 
@@ -73,6 +79,8 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
 
         outState.putIntArray("FRAMES", frames);
         outState.putBoolean("HIDEN", hiden);
+
+        outState.putIntArray("SEQUENCE", sequence);
     }
 
 
@@ -80,11 +88,19 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     public void onButtonClickShuffle() {
         Toast.makeText(getApplicationContext(),"Shuffle", Toast.LENGTH_SHORT).show();
 
-        List<Integer> list = new ArrayList<Integer>(Arrays.asList(frames[0], frames[1], frames[2], frames[3]));
+        //zamiast ramek będziemy mieszac fragmenty - stary kod
+        /*List<Integer> list = new ArrayList<Integer>(Arrays.asList(frames[0], frames[1], frames[2], frames[3]));
         Collections.shuffle(list);
         for(int i = 0; i < 4; i++){
             frames[i] = list.get(i).intValue();
-        }
+        }*/
+
+        //nowy kod - mieszamy sekwencje fragmentow
+        List<Integer> s = new ArrayList<>(Arrays.asList(sequence[0], sequence[1], sequence[2], sequence[3]));
+        Collections.shuffle(s);
+        for(int i = 0; i < 4; i++)
+            sequence[i] = s.get(i);
+        //koniec nowego kodu
 
         newFragments();
     }
@@ -154,6 +170,10 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     private  void newFragments(){
         Fragment[] newFragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
 
+        //do buga
+        Fragment[] inSequence = new Fragment[]{newFragments[sequence[0]], newFragments[sequence[1]], newFragments[sequence[2]], newFragments[sequence[3]]}
+        newFragments = inSequence;
+        //po bugu :)
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
