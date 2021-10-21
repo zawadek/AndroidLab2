@@ -10,6 +10,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends FragmentActivity implements  Fragment1.OnButtonClickListener{
 
     //Wersja z lab 2 poniżej
@@ -74,6 +79,14 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     @Override
     public void onButtonClickShuffle() {
         Toast.makeText(getApplicationContext(),"Shuffle", Toast.LENGTH_SHORT).show();
+
+        List<Integer> list = new ArrayList<Integer>(Arrays.asList(frames[0], frames[1], frames[2], frames[3]));
+        Collections.shuffle(list);
+        for(int i = 0; i < 4; i++){
+            frames[i] = list.get(i).intValue();
+        }
+
+        newFragments();
     }
 
     @Override
@@ -128,5 +141,21 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
         if(fragment instanceof Fragment1){
             ((Fragment1) fragment).setOnButtonClickListener(this);
         }
+    }
+
+    private  void newFragments(){
+        Fragment[] newFragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        for(int i = 0; i < 4; i++){
+            transaction.replace(frames[i],newFragments[i]);
+            if(hiden && !(newFragments[i] instanceof Fragment1))
+                transaction.hide(newFragments[i]);
+        }
+
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
