@@ -171,7 +171,7 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
         Fragment[] newFragments = new Fragment[]{new Fragment1(), new Fragment2(), new Fragment3(), new Fragment4()};
 
         //do buga
-        Fragment[] inSequence = new Fragment[]{newFragments[sequence[0]], newFragments[sequence[1]], newFragments[sequence[2]], newFragments[sequence[3]]}
+        Fragment[] inSequence = new Fragment[]{newFragments[sequence[0]], newFragments[sequence[1]], newFragments[sequence[2]], newFragments[sequence[3]]};
         newFragments = inSequence;
         //po bugu :)
         FragmentManager fragmentManager = getSupportFragmentManager();
