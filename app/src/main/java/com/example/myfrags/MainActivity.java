@@ -8,8 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements  Fragment1.OnButtonClickListener{
 
     //Wersja z lab 2 poniżej
     /*private FragmentManager fragmentManager;
@@ -55,7 +56,7 @@ public class MainActivity extends FragmentActivity {
 
             transaction.addToBackStack(null);
             transaction.commit();
-        }else {
+        } else {
             frames = savedInstanceState.getIntArray("FRAMES");
             hiden = savedInstanceState.getBoolean("HIDEN");
         }
@@ -67,5 +68,35 @@ public class MainActivity extends FragmentActivity {
 
         outState.putIntArray("FRAMES", frames);
         outState.putBoolean("HIDEN", hiden);
+    }
+
+
+    @Override
+    public void onButtonClickShuffle() {
+        Toast.makeText(getApplicationContext(),"Shuffle", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onButtonClickClockwise() {
+        Toast.makeText(getApplicationContext(), "Clockwise", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onButtonClickHide() {
+        Toast.makeText(getApplicationContext(), "Hide", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onButtonClickRestore() {
+        Toast.makeText(getApplicationContext(), "Restore", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+        if(fragment instanceof Fragment1){
+            ((Fragment1) fragment).setOnButtonClickListener(this);
+        }
     }
 }
