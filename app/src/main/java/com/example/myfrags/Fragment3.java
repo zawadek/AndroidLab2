@@ -110,7 +110,7 @@ public class Fragment3 extends Fragment {
         numberObserver = new Observer<Integer>() {
             @Override
             public void onChanged(Integer newInteger) {
-                text.setText((newInteger));
+                text.setText(newInteger.toString());
             }
         };
 
