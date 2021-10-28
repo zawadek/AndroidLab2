@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity implements  Fragment1.OnButto
     private boolean hiden;
     private int[] sequence;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
