@@ -145,7 +145,7 @@ public class Fragment4 extends Fragment {
                     turnOffWatccher = !turnOffWatccher;
                 }
             }
-        }
+        };
 
         //podlaczenie textwatchera do pola edycyjnego
         edit.addTextChangedListener(textWatcher);
