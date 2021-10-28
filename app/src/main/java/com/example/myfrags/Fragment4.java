@@ -69,12 +69,26 @@ public class Fragment4 extends Fragment {
 }*/
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class Fragment4 extends Fragment {
+
+    //podłączanie danych 1.
+    private FragsData fragsData;
+    private Observer<Integer> numberObserver;
+    //obsluga pola edycyjnego 2.
+    private EditText edit;
+    private TextWatcher textWatcher;
+    private boolean turnOffWatccher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +101,54 @@ public class Fragment4 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_4, container, false);
+
+        //dostep do pola edycyjnego
+        edit = view.findViewById(R.id.editTextNumber);
+
+        //pobranie obiektu ViewModel
+        fragsData = new ViewModelProvider(requireActivity()).get(FragsData.class);
+
+        //tworzenie obserwatora
+        numberObserver = new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer newInteger) {
+                turnOffWatccher = true;
+                edit.setText(newInteger.toString());
+            }
+        };
+
+        //podlaczenie obserwatora do zmiennej
+        fragsData.counter.observe(getViewLifecycleOwner(),numberObserver);
+
+        //stworzenie obiektu TextWatchera
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if(!turnOffWatccher){
+                    Integer i;
+                    try{
+                        i = Integer.parseInt(editable.toString());
+                    }catch(NumberFormatException e){
+                        i = fragsData.counter.getValue();
+                    }
+                    fragsData.counter.setValue(i);
+                }else{
+                    turnOffWatccher = !turnOffWatccher;
+                }
+            }
+        }
+
+        //podlaczenie textwatchera do pola edycyjnego
+        edit.addTextChangedListener(textWatcher);
 
         return view;
     }
