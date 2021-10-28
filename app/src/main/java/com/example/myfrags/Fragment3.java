@@ -68,12 +68,24 @@ public class Fragment3 extends Fragment {
     }
 }*/
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class Fragment3 extends Fragment {
+
+    //podłączanie danych 1.
+    private FragsData fragsData;
+    private Observer<Integer> numberObserver;
+    //obsługa widokow 2.
+    private TextView text;
+    private Button button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +98,33 @@ public class Fragment3 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_3, container, false);
+
+        //dostep do pola tekstowego i przycisku
+        text = (TextView) view.findViewById(R.id.current);
+        button = (Button) view.findViewById(R.id.button_minus);
+
+        //pobranie obiektu ViewModel
+        fragsData = new ViewModelProvider((requireActivity())).get(FragsData.class);
+
+        //tworzenie obserwatora
+        numberObserver = new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer newInteger) {
+                text.setText((newInteger));
+            }
+        };
+
+        //podlaczenie obserwatora do zmiennej
+        fragsData.counter.observe(getViewLifecycleOwner(),numberObserver);
+
+        //obsluga przycisku plus
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer i = fragsData.counter.getValue();
+                fragsData.counter.setValue(--i);
+            }
+        });
 
         return view;
     }
